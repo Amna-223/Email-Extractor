@@ -18,20 +18,21 @@ def does_domain_exist(domain):
         return False
 
 def clean_and_format_email(messy_email):
-    """Cleans up the obfuscated email matches."""
+    """Cleans up obfuscated email matches — order-safe version."""
     email = messy_email.strip()
+
+    # Step 1: Replace obfuscated '@' patterns FIRST, while spacing still exists
+    # Order matters: bracketed forms first, then space-boundary form
+    email = re.sub(r'\[at\]|\(at\)|\{at\}|-at-', '@', email, flags=re.IGNORECASE)
+    email = re.sub(r'\s+at\s+', '@', email, flags=re.IGNORECASE)
+
+    # Step 2: Replace obfuscated '.' patterns, same order logic
+    email = re.sub(r'\[dot\]|\(dot\)|\{dot\}|-dot-', '.', email, flags=re.IGNORECASE)
+    email = re.sub(r'\s+dot\s+', '.', email, flags=re.IGNORECASE)
+
+    # Step 3: NOW it's safe to strip remaining whitespace
     email = re.sub(r'\s+', '', email)
-    
-    # Standardize the '@' symbol (including your space-at-space addition)
-    at_patterns = [r'\[at\]', r'\(at\)', r'-at-', r'\{at\}', r'at']
-    for pattern in at_patterns:
-        email = re.sub(pattern, '@', email, flags=re.IGNORECASE)
-        
-    # Standardize the '.' symbol
-    dot_patterns = [r'\[dot\]', r'\(dot\)', r'-dot-', r'\{dot\}', r'dot']
-    for pattern in dot_patterns:
-        email = re.sub(pattern, '.', email, flags=re.IGNORECASE)
-        
+
     return email
 
 def validate_and_refine_email(messy_email, target_url):
@@ -165,7 +166,11 @@ def email_extractor_engine(target_url):
     return final_emails
 
 # --- Run a Test ---
-test_site = "https://www.sitepoint.com/"
+# test_site = "https://lodestar.asu.edu"
+
+test_site = "www.sitepoint.com"
+if "://" not in test_site:
+    test_site = "https://" + test_site.strip()
 results = email_extractor_engine(test_site)
 print("\n--- FINAL RESULTS ---")
 print(results if results else "No emails found.")
