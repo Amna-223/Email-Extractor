@@ -80,6 +80,13 @@ def normalise_email(raw: str) -> str | None:
  
     if '@' not in step2:
         return None
+
+    username, domain = step2.split('@', 1)
+    if '/' in username or '\\' in username:
+        return None
+    
+    if len(username) < 2:
+        return None
  
     if not CLEAN_EMAIL_PATTERN.match(step2):
         return None
