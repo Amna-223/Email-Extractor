@@ -1,4 +1,3 @@
 [
-{"email": "info@techasoft.com", "confidence": "high", "found_via": "mailto", "source_url": "https://www.techasoft.com/arif-mallick/ai-startup-leader", "domain": "techasoft.com", "site_domain": "techasoft.com", "mx_valid": true, "smtp_result": "skipped"},
-{"email": "arif@techasoft.com", "confidence": "high", "found_via": "mailto", "source_url": "https://www.techasoft.com/arif-mallick/ai-startup-leader", "domain": "techasoft.com", "site_domain": "techasoft.com", "mx_valid": true, "smtp_result": "skipped"}
+{"email": "pr@coschedule.com", "confidence": "high", "found_via": "mailto", "source_url": "https://coschedule.com/support/contact", "domain": "coschedule.com", "site_domain": "coschedule.com", "mx_valid": true, "smtp_result": "skipped"}
 ]

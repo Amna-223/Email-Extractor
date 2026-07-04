@@ -1,5 +1,7 @@
 import re
 import json
+import html
+from urllib import response
 import scrapy
 from urllib.parse import urlparse
 from email_extractor.items import EmailItem
@@ -70,7 +72,10 @@ def normalise_email(raw: str) -> str | None:
     Full normalisation pipeline for a single raw match.
     Returns a clean email string, or None if it's structurally invalid.
     """
-    step1 = clean_and_format_email(raw)
+    step0 = html.unescape(raw)
+    if re.search(r'[<>"\']', step0):
+        return None
+    step1 = clean_and_format_email(step0)
     step2 = clean_extension_junk(step1)
  
     if '@' not in step2:
@@ -189,6 +194,13 @@ class EmailSpider(scrapy.Spider):
         Usage:
             scrapy crawl email_spider -a url=https://sitepoint.com
         """
+
+        self.priority_keywords = [
+            'contact', 'contact us', 'conatct-us' 'about', 'team', 'advertise', 'advertising',
+            'info', 'support', 'help', 'career', 'jobs', 'hire',
+            'press', 'media', 'partnership', 'sponsor', 'work-with-us',
+            'get-in-touch', 'reach-us', 'connect', 'staff', 'people'
+        ]
         super().__init__(*args, **kwargs)
  
         if not url:
@@ -268,15 +280,45 @@ class EmailSpider(scrapy.Spider):
                 smtp_result = '',            # pipeline fills this
             )
  
-        # --- 3. Follow same-domain links ---
+        # --- 3. Follow links — priority pages pehle ---
+        priority_links = []
+        normal_links = []
+
         for href in response.css('a::attr(href)').getall():
             full_url = response.urljoin(href)
-            parsed   = urlparse(full_url)
- 
-            # Stay within the same domain (subdomains allowed)
-            if self.site_domain in parsed.netloc:
-                yield scrapy.Request(
-                    full_url,
-                    meta={"playwright": True},
-                    callback=self.parse
-                )
+            parsed = urlparse(full_url)
+
+            if self.site_domain not in parsed.netloc:
+                continue  # bahar ki sites skip
+            
+            # Check karo kya yeh priority page hai
+            url_lower = full_url.lower()
+            link_text = ' '.join(response.css(f'a[href="{href}"]::text').getall()).lower()
+
+            is_priority = any(
+                kw in url_lower or kw in link_text
+                for kw in self.priority_keywords
+            )
+
+            if is_priority:
+                priority_links.append(full_url)
+            else:
+                normal_links.append(full_url)
+
+        # Priority links pehle yield karo
+        for url in priority_links:
+            yield scrapy.Request(
+                url,
+                meta={"playwright": True},
+                callback=self.parse,
+                priority=10  # ← Scrapy pehle inhe process karta hai
+            )
+
+        # Normal links baad mein
+        for url in normal_links:
+            yield scrapy.Request(
+                url,
+                meta={"playwright": True},
+                callback=self.parse,
+                priority=0
+            )
