@@ -1,3 +1,10 @@
 [
-{"email": "pr@coschedule.com", "confidence": "high", "found_via": "mailto", "source_url": "https://coschedule.com/support/contact", "domain": "coschedule.com", "site_domain": "coschedule.com", "mx_valid": true, "smtp_result": "skipped"}
+{"email": "role@success.it", "confidence": "medium", "found_via": "regex", "source_url": "https://www.success.com", "domain": "success.it", "site_domain": "success.com", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "glenn@success.com", "confidence": "medium", "found_via": "regex", "source_url": "https://www.success.com", "domain": "success.com", "site_domain": "success.com", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "fast@building.ai", "confidence": "medium", "found_via": "regex", "source_url": "https://www.success.com", "domain": "building.ai", "site_domain": "success.com", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "contact@success.com", "confidence": "medium", "found_via": "regex", "source_url": "https://www.success.com/contact", "domain": "success.com", "site_domain": "success.com", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "customerservice@success.com", "confidence": "high", "found_via": "mailto", "source_url": "https://www.success.com/help", "domain": "success.com", "site_domain": "success.com", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "coaching@success.com", "confidence": "high", "found_via": "mailto", "source_url": "https://coaching.success.com/", "domain": "success.com", "site_domain": "success.com", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "workwithus@success.com", "confidence": "high", "found_via": "mailto", "source_url": "https://www.success.com/media-kit", "domain": "success.com", "site_domain": "success.com", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "press@success.com", "confidence": "high", "found_via": "mailto", "source_url": "https://www.success.com/press", "domain": "success.com", "site_domain": "success.com", "mx_valid": true, "smtp_result": "skipped"}
 ]

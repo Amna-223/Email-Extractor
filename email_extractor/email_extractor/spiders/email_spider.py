@@ -1,6 +1,8 @@
 import re
 import json
 import html
+import socket
+import ipaddress
 from urllib import response
 import scrapy
 from urllib.parse import urlparse
@@ -73,6 +75,7 @@ def normalise_email(raw: str) -> str | None:
     Returns a clean email string, or None if it's structurally invalid.
     """
     step0 = html.unescape(raw)
+    step0 = re.sub(r'u00[0-9a-f]{2}', '', step0, flags=re.IGNORECASE)
     if re.search(r'[<>"\']', step0):
         return None
     step1 = clean_and_format_email(step0)
@@ -181,12 +184,75 @@ def extract_regex(response) -> list[tuple[str, str]]:
     """
     results = []
     page_text = ' '.join(response.css('body *::text').getall())
-    raw_matches = BROAD_EMAIL_PATTERN.findall(page_text)
-    for raw in raw_matches:
-        clean = normalise_email(raw)
-        if clean:
-            results.append((clean, 'regex'))
+    MAX_CHUNK_SIZE = 10000  # 10k characters per chunk
+    
+    chunks = [page_text[i:i+MAX_CHUNK_SIZE] for i in range(0, len(page_text), MAX_CHUNK_SIZE)]
+    
+    for chunk in chunks:
+        raw_matches = BROAD_EMAIL_PATTERN.findall(chunk)
+        for raw in raw_matches:
+            clean = normalise_email(raw)
+            if clean:
+                results.append((clean, 'regex'))
+    
     return results
+
+# -----------------------------------------------------------------------
+# Security checks
+# -----------------------------------------------------------------------
+
+def validate_url(url: str) -> str:
+    """
+    1. Sirf http/https allow karo
+    2. Private/internal IPs block karo
+    """
+    parsed = urlparse(url)
+
+    # Check 1 — scheme
+    if parsed.scheme not in ('http', 'https'):
+        raise ValueError(f"Invalid URL scheme: '{parsed.scheme}'. Only http/https is allowed.")
+
+    # Check 2 — hostname hona chahiye
+    if not parsed.hostname:
+        raise ValueError("Invalid URL — hostname missing.")
+
+    return url
+
+
+def is_safe_url(url: str) -> bool:
+    """
+    SSRF protection — private/internal IP ranges block karo.
+    Cloud metadata servers bhi block hote hain.
+    """
+    parsed = urlparse(url)
+    hostname = parsed.hostname
+
+    # Explicitly blocked hostnames
+    blocked_hostnames = [
+        'localhost',
+        '169.254.169.254',  # AWS/GCP metadata server
+        'metadata.google.internal',
+    ]
+    if hostname in blocked_hostnames:
+        raise ValueError(f"Blocked hostname: {hostname}")
+
+    # IP address check
+    try:
+        ip = ipaddress.ip_address(socket.gethostbyname(hostname))
+
+        if ip.is_private:
+            raise ValueError(f"Private IP blocked: {ip}")
+        if ip.is_loopback:
+            raise ValueError(f"Loopback IP blocked: {ip}")
+        if ip.is_link_local:
+            raise ValueError(f"Link-local IP blocked: {ip}")
+        if ip.is_reserved:
+            raise ValueError(f"Reserved IP blocked: {ip}")
+
+    except socket.gaierror:
+        raise ValueError(f"Hostname did not resolve: {hostname}")
+
+    return True
  
  
 # ---------------------------------------------------------------------------
@@ -201,6 +267,26 @@ class EmailSpider(scrapy.Spider):
         Usage:
             scrapy crawl email_spider -a url=https://sitepoint.com
         """
+
+        super().__init__(*args, **kwargs)
+
+        if not url:
+            raise ValueError("Provide a start URL:  -a url=https://example.com")
+
+        # Scheme add karo agar missing ho
+        if '://' not in url:
+            url = 'https://' + url.strip()
+
+        # Security checks — pehle validate karo
+        try:
+            validate_url(url)      # Check 1 & 2 — scheme + hostname
+            is_safe_url(url)       # Check 3 — SSRF protection
+        except ValueError as e:
+            raise ValueError(f"URL rejected: {e}")
+        
+        self.start_urls = [url]
+        self.site_domain = get_site_domain(url)
+        self._seen_emails: set[str] = set()
 
         self.priority_keywords = [
             'contact', 'contact us', 'conatct-us' 'about', 'team', 'advertise', 'advertising',
