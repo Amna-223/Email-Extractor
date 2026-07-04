@@ -1,0 +1,4 @@
+[
+{"email": "info@techasoft.com", "confidence": "high", "found_via": "mailto", "source_url": "https://www.techasoft.com/arif-mallick/ai-startup-leader", "domain": "techasoft.com", "site_domain": "techasoft.com", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "arif@techasoft.com", "confidence": "high", "found_via": "mailto", "source_url": "https://www.techasoft.com/arif-mallick/ai-startup-leader", "domain": "techasoft.com", "site_domain": "techasoft.com", "mx_valid": true, "smtp_result": "skipped"}
+]
