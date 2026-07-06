@@ -1,5 +1,3 @@
 [
-{"email": "support@sitepoint.com", "source_url": "https://www.sitepoint.com/", "found_via": "mailto", "domain": "sitepoint.com", "site_domain": "sitepoint.com", "confidence": "high", "mx_valid": true, "smtp_result": "skipped"},
-{"email": "pricing@openai.com", "source_url": "https://www.sitepoint.com/prompt-compression-cache-tuning-llm-api-costs/", "found_via": "regex", "domain": "openai.com", "site_domain": "sitepoint.com", "confidence": "medium", "mx_valid": true, "smtp_result": "skipped"},
-{"email": "verify@openai.com", "source_url": "https://www.sitepoint.com/prompt-compression-cache-tuning-llm-api-costs/", "found_via": "regex", "domain": "openai.com", "site_domain": "sitepoint.com", "confidence": "medium", "mx_valid": true, "smtp_result": "skipped"}
+{"email": "info@techasoft.com", "source_url": "https://www.techasoft.com/jobs/work-from-home-php-jobs", "found_via": "mailto", "domain": "techasoft.com", "site_domain": "techasoft.com", "confidence": "high", "mx_valid": true, "smtp_result": "skipped"}
 ]

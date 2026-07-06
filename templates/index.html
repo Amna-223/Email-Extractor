@@ -3,40 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Email Extractor</title>
 </head>
 <body>
-    <h1>Email Extractor</h1>
-    <form action="/" method="POST">
-        <input type="text" name="url" placeholder="Enter URL" required>
-        <button type="submit">Extract</button>
-    </form>
+    <nav class="navbar">
+        <div class="nav-container">
+            <span class="nav-logo">Email Extractor</span>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/contact">Feedback</a>
+                <a href="/terms">Terms</a>
+            </div>
+        </div>
+    </nav>
 
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
+    <div class="hero">
+        <h1>Extract Emails from Any Website</h1>
+        <p>Enter a URL and we'll find all publicly available contact emails.</p>
+    </div>
 
-    {% if results is not none %}
-        {% if results|length == 0 %}
-            <p>No emails found</p>
-        {% else %}
-            <table>
-                <thead>
-                    <th>Email</th>
-                    <th>Confidence</th>
-                    <th>Source URL</th>
-                </thead>
-                <tbody>
-                    {% for item in results %}
-                    <tr>
-                        <td>{{ item.email }}</td>
-                        <td>{{ item.confidence }}</td>
-                        <td>{{ item.source_url }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <div class="container">
+        <form action="/" method="POST" class="search-box">
+            <input type="text" name="url" placeholder="https://example.com" autocomplete="off" required>
+            <button type="submit">Extract</button>
+        </form>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
         {% endif %}
-    {% endif %}
+
+        {% if results is not none %}
+            {% if results|length == 0 %}
+                <div class="no-results">No emails found for this website.</div>
+            {% else %}
+                <p class="results-count">Found {{ results|length }} email(s)</p>
+                <table class="results-table">
+                    <thead>
+                        <th>Email</th>
+                        <th>Confidence</th>
+                        <th>Source URL</th>
+                    </thead>
+                    <tbody>
+                        {% for item in results %}
+                        <tr>
+                            <td>{{ item.email }}</td>
+                            <td>
+                                <span class="badge badge-{{ item.confidence }}">
+                                    {{ item.confidence }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{{ item.source_url }}"
+                                   target="_blank"
+                                   class="source-link">
+                                    {{ item.source_url }}
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <footer class="footer">
+        <p>Built by Amna Saeed &nbsp;|&nbsp; <a href="/contact">Send Feedback</a> &nbsp;|&nbsp; <a href="/terms">Terms of Use</a></p>
+    </footer>
 </body>
 </html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Terms of Use — Email Extractor</title>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <span class="nav-logo">Email Extractor</span>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/contact">Feedback</a>
+                <a href="/terms">Terms</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="margin-top: 60px;">
+        <h2 class="page-title">Terms of Use</h2>
+        <p class="page-subtitle">Please read these terms before using Email Extractor.</p>
+
+        <div class="terms-box">
+            <h3>1. Purpose</h3>
+            <p>Email Extractor is a personal project built for research and educational purposes. It crawls publicly available web pages to find contact email addresses.</p>
+
+            <h3>2. Acceptable Use</h3>
+            <p>You may use this tool only to extract emails from websites you own or have explicit permission to crawl. Do not use this tool to collect emails for spam, unsolicited marketing, or any illegal activity.</p>
+
+            <h3>3. Accuracy</h3>
+            <p>Results are provided with a confidence score (High / Medium / Low). The tool does not guarantee the accuracy or deliverability of extracted emails. Use results at your own discretion.</p>
+
+            <h3>4. Responsibility</h3>
+            <p>The creator of this tool is not responsible for how extracted data is used. You are solely responsible for ensuring your use complies with applicable laws.</p>
+
+            <h3>5. robots.txt Compliance</h3>
+            <p>This tool respects robots.txt by default. It is your responsibility not to disable this setting when crawling sites that restrict automated access.</p>
+
+            <h3>6. Changes</h3>
+            <p>These terms may be updated at any time without notice.</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Built by Aamna &nbsp;|&nbsp; <a href="/contact">Send Feedback</a> &nbsp;|&nbsp; <a href="/terms">Terms of Use</a></p>
+    </footer>
+
+</body>
+</html>
