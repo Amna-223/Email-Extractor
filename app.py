@@ -46,7 +46,6 @@ def send_feedback_email(name, sender_email, message):
 
 
 @app.route('/' , methods=['GET', 'POST'])
-@app.route('/', methods=['GET', 'POST'])
 def home():
     results = None
     error = None
@@ -74,6 +73,9 @@ def home():
                         os.path.dirname(os.path.abspath(__file__)),
                         'temp_results.json'
                     )
+
+                    if os.path.exists(output_file):
+                        os.remove(output_file)
 
                     p = multiprocessing.Process(
                         target=run_spider,

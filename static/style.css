@@ -322,3 +322,18 @@ body {
 .footer a:hover {
     color: white;
 }
+.loading-box {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    color: #444;
+    font-size: 1rem;
+}
+
+.loading-sub {
+    color: #888;
+    font-size: 0.88rem;
+    margin-top: 8px;
+}

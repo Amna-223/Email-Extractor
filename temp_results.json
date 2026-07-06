@@ -1,3 +1,6 @@
 [
-{"email": "info@techasoft.com", "source_url": "https://www.techasoft.com/jobs/work-from-home-php-jobs", "found_via": "mailto", "domain": "techasoft.com", "site_domain": "techasoft.com", "confidence": "high", "mx_valid": true, "smtp_result": "skipped"}
+{"email": "hello@colossal.art", "source_url": "https://www.thisiscolossal.com", "found_via": "json_ld", "domain": "colossal.art", "site_domain": "thisiscolossal.com", "confidence": "medium", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "opps@colossal.art", "source_url": "https://www.thisiscolossal.com/contact/", "found_via": "mailto", "domain": "colossal.art", "site_domain": "thisiscolossal.com", "confidence": "medium", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "membership@colossal.art", "source_url": "https://www.thisiscolossal.com/contact/", "found_via": "mailto", "domain": "colossal.art", "site_domain": "thisiscolossal.com", "confidence": "medium", "mx_valid": true, "smtp_result": "skipped"},
+{"email": "haitian-american@all.it", "source_url": "https://www.thisiscolossal.com/2023/09/morel-doucet-interview/", "found_via": "regex", "domain": "all.it", "site_domain": "thisiscolossal.com", "confidence": "medium", "mx_valid": true, "smtp_result": "skipped"}
 ]

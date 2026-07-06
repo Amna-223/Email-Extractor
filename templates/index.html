@@ -25,51 +25,73 @@
 
     <div class="container">
         <form action="/" method="POST" class="search-box">
-            <input type="text" name="url" placeholder="https://example.com" autocomplete="off" required>
+            <input type="text" name="url" placeholder="https://example.com" autocomplete="off">
             <button type="submit">Extract</button>
         </form>
 
-        {% if error %}
-            <div class="error">{{ error }}</div>
-        {% endif %}
+        <div id="loading" style="display:none;">
+            <div class="loading-box">
+                <p>Finding emails, please wait...</p>
+                <p class="loading-sub">This may take a minute depending on the website.</p>
+            </div>
+        </div>
 
-        {% if results is not none %}
-            {% if results|length == 0 %}
-                <div class="no-results">No emails found for this website.</div>
-            {% else %}
-                <p class="results-count">Found {{ results|length }} email(s)</p>
-                <table class="results-table">
-                    <thead>
-                        <th>Email</th>
-                        <th>Confidence</th>
-                        <th>Source URL</th>
-                    </thead>
-                    <tbody>
-                        {% for item in results %}
-                        <tr>
-                            <td>{{ item.email }}</td>
-                            <td>
-                                <span class="badge badge-{{ item.confidence }}">
-                                    {{ item.confidence }}
-                                </span>
-                            </td>
-                            <td>
-                                <a href="{{ item.source_url }}"
-                                   target="_blank"
-                                   class="source-link">
-                                    {{ item.source_url }}
-                                </a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <div id="results-section">
+            {% if error %}
+                <div class="error">{{ error }}</div>
             {% endif %}
-        {% endif %}
+
+            {% if results is not none %}
+                {% if results|length == 0 %}
+                    <div class="no-results">
+                        <p>No emails found for this website.</p>
+                    </div>
+                {% else %}
+                    <p class="results-count">Found {{ results|length }} email(s)</p>
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Confidence</th>
+                                <th>Source URL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in results %}
+                            <tr>
+                                <td>{{ item.email }}</td>
+                                <td>
+                                    <span class="badge badge-{{ item.confidence }}">
+                                        {{ item.confidence }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ item.source_url }}"
+                                       target="_blank"
+                                       class="source-link">
+                                        {{ item.source_url }}
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
 
     <footer class="footer">
         <p>Built by Amna Saeed &nbsp;|&nbsp; <a href="/contact">Send Feedback</a> &nbsp;|&nbsp; <a href="/terms">Terms of Use</a></p>
     </footer>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('loading').style.display = 'block';
+
+            const resultsSection = document.getElementById('results-section');
+            if (resultsSection) resultsSection.style.display = 'none';
+        });
+    </script>
 </body>
 </html>
