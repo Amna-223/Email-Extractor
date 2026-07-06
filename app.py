@@ -9,7 +9,7 @@ import os
 app = Flask(__name__)
 
 def run_spider(url, output_file):
-    scrapy_project_path = os.path.join(os.path.dirname(__file__), 'email_extractor')
+    scrapy_project_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'email_extractor')
     sys.path.insert(0, scrapy_project_path)
     os.chdir(scrapy_project_path)
     
@@ -36,27 +36,27 @@ def home():
     if request.method == 'POST':
         url = request.form.get('url', '').strip()
 
-    if not url:
-        error = "Enter URL first"
-    else:
-        output_file = 'temp_results.json'
+        if not url:
+            error = "Enter URL first"
+        else:
+            output_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'temp_results.json')
 
-        p = multiprocessing.Process(
-            target = run_spider, 
-            args = (url, output_file)
-        )
+            p = multiprocessing.Process(
+                target = run_spider, 
+                args = (url, output_file)
+            )
 
-        p.start()
-        p.join()
+            p.start()
+            p.join()
 
-        if os.path.exists(output_file):
-            with open(output_file, 'r') as f:
-                results = json.loads(f)
+            if os.path.exists(output_file):
+                with open(output_file, 'r') as f:
+                    results = json.load(f)
 
-        if not results:
-            results = []
-    
-    return render_template('index.html', results=results, error=error)
+            if not results:
+                results = []
+
+        return render_template('index.html', results=results, error=error)
 
 if __name__ == '__main__':
     multiprocessing.freeze_support()

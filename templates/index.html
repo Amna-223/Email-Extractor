@@ -11,5 +11,32 @@
         <input type="text" name="url" placeholder="Enter URL" required>
         <button type="submit">Extract</button>
     </form>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+    {% if results is not none %}
+        {% if results|length == 0 %}
+            <p>No emails found</p>
+        {% else %}
+            <table>
+                <thead>
+                    <th>Email</th>
+                    <th>Confidence</th>
+                    <th>Source URL</th>
+                </thead>
+                <tbody>
+                    {% for item in results %}
+                    <tr>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.confidence }}</td>
+                        <td>{{ item.source_url }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    {% endif %}
 </body>
 </html>
