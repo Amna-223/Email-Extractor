@@ -3,10 +3,13 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 import multiprocessing
 from email.mime.text import MIMEText
+from dotenv import load_dotenv 
 import smtplib
 import json
 import sys
 import os
+
+load_dotenv()
 
 app = Flask(__name__)
 
