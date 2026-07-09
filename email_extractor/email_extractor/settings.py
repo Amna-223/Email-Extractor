@@ -1,7 +1,4 @@
-# =============================================================================
-#  Scrapy Settings — Email Extractor
-# =============================================================================
-#
+
 #  These are the knobs you'll touch most often.
 #  Everything else Scrapy handles automatically.
 # =============================================================================
@@ -138,3 +135,5 @@ DOWNLOAD_HANDLERS = {
     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
 }
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
+
+DOWNLOAD_TIMEOUT = 60

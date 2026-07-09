@@ -317,6 +317,10 @@ class EmailSpider(scrapy.Spider):
                 meta={
                     "playwright": True,
                     "playwright_include_page": False,
+                    "playwright_page_goto_kwargs": {
+                        "timeout": 60000,  # 60 seconds
+                        "wait_until": "load", 
+                    }
                 },
                 callback=self.parse
             )
@@ -402,16 +406,26 @@ class EmailSpider(scrapy.Spider):
         for url in priority_links:
             yield scrapy.Request(
                 url,
-                meta={"playwright": True},
+                meta={
+                    "playwright": True,
+                    "playwright_page_goto_kwargs": {
+                        "timeout": 60000,
+                    },
+                },
                 callback=self.parse,
-                priority=10  # ← Scrapy pehle inhe process karta hai
+                priority=10
             )
 
         # Normal links baad mein
         for url in normal_links:
             yield scrapy.Request(
                 url,
-                meta={"playwright": True},
+                meta={
+                    "playwright": True,
+                    "playwright_page_goto_kwargs": {
+                        "timeout": 60000,
+                    },
+                },
                 callback=self.parse,
                 priority=0
             )
