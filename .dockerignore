@@ -1,0 +1,17 @@
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.git
+.gitignore
+.vscode
+.idea
+
+temp_results.json
+results.json
+
+.env
+
+Dockerfile
+README.md
