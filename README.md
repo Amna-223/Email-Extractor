@@ -99,12 +99,21 @@ Inspired by Hunter.io's validation philosophy, the application avoids pretending
 
 ## 📸 Screenshots
 
-> *Screenshots will be added soon.*
+### 🏠 Home Page
 
-* Home Page
-* Extraction Results
-* Confidence Scoring
-* Feedback Page
+![Home Page](assets/home.png)
+
+### 📊 Extraction Results
+
+![Extraction Results](assets/results.png)
+
+### 💬 Feedback Page
+
+![Feedback Page](assets/feedback.png)
+
+### 📄 Terms of Use
+
+![Terms of Use](assets/terms.png)
 
 ---
 
